@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://api.nocodemapapp.com"
+      "url": "https://staging-dot-ncmapa-staging.de.r.appspot.com"
     }
   ],
   "security": [
@@ -83,6 +83,17 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewLocation"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Location response",
@@ -183,6 +194,17 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewLocation"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Location response",
@@ -210,7 +232,7 @@
         }
       },
       "delete": {
-        "description": "Delete a location in a specific map",
+        "description": "Delete a location on a specific map",
         "parameters": [
           {
             "name": "mapId",
@@ -346,7 +368,6 @@
         ],
         "type": "object",
         "properties": {
-
           "id": {
             "description": "The ID of Map",
             "type": "string",
@@ -397,34 +418,70 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The name of Map",
-            "type": "string"
+            "description": "The ID of Location",
+            "type": "string",
+            "example": "04P1DY1YbwePX2rjKo3H"
           },
-          "isDeleted": {
-            "description": "True if Map is deleted",
-            "type": "boolean"
+          "name": {
+            "description": "The name of Location",
+            "type": "string",
+            "example": "The Kooks Restaurant"
+          },
+          "placeId": {
+            "description": "The placeId resolved (via geocoding) for this location",
+            "type": "string",
+            "example": "ChIJ6_ktdpMVvEgRJBv3ZEgxsD8"
+          },
+          "latLngLiteral": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "description": "Latitude of this location",
+                "type": "integer",
+                "format": "int64",
+                "example": "61.89263500000001"
+              },
+              "lng": {
+                "description": "Latitude of this location",
+                "type": "integer",
+                "format": "int64",
+                "example": "-6.911805999999999"
+              }
+            }
+          },
+          "properties": {
+            "type": "object",
+            "description": "This object contains all the data fields that were passed in for this location at import/creation",
+            "example": {
+              "Restaurant": "The Kooks Restaurant",
+              "Address": "Frammi við Gjónna, Leynavatn 410, Faroe Islands",
+              "key": "The Kooks Restaurant"
+            }
           }
         }
       },
-      "NewPlan": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Map"
-          },
-          {
-            "required": [
-              "id"
-            ],
+      "NewLocation": {
+        "required": [
+          "fields"
+        ],
+        "type": "object",
+        "properties": {
+          "fields": {
+            "description": "All data of this location as object. MUST include a name & address field that was specified at the creation of Map.",
             "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+            "example": {
+              "Name": "The Kooks Restaurant",
+              "Address": "Frammi við Gjónna, Leynavatn 410, Faroe Islands",
+              "key": "The Kooks Restaurant"
             }
+          },
+          "order": {
+            "description": "By default locations are listed by {order} in ascending order. Specify if you have specific preference on where this location shall be shown in the list. By default, it’s appended to the end of list.",
+            "type": "integer",
+            "format": "int64",
+            "example": "1"
           }
-        ]
+        }
       },
       "Field": {
         "required": [
