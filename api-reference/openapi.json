@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://staging-dot-ncmapa-staging.de.r.appspot.com"
+      "url": "https://realtime.nocodemapapp.com"
     }
   ],
   "security": [
