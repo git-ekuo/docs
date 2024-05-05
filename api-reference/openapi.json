@@ -89,9 +89,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Location"
+                    }
                   }
                 }
               }
@@ -273,7 +275,18 @@
         "responses": {
           "200": {
             "description": "Map retrieved",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Map"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "unexpected error",
@@ -298,9 +311,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Map"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Map"
+                      }
+                    }
                   }
                 }
               }
@@ -328,13 +346,47 @@
         ],
         "type": "object",
         "properties": {
+
           "id": {
+            "description": "The ID of Map",
+            "type": "string",
+            "example": "a1b2b33b4b123"
+          },
+          "name": {
             "description": "The name of Map",
-            "type": "string"
+            "type": "string",
+            "example": "All Podcast story locations"
           },
           "isDeleted": {
             "description": "True if Map is deleted",
-            "type": "boolean"
+            "type": "boolean",
+            "example": false
+          },
+          "createdAt": {
+            "description": "Timestamp when this map was created",
+            "type": "string",
+            "example": "2024-02-05T15:24:11.000Z"
+          },
+          "isPublished": {
+            "description": "True if this map is published to public",
+            "type": "boolean",
+            "example": false
+          },
+          "googleMapApiKey": {
+            "description": "Google Maps API Key for loading this map",
+            "type": "string",
+            "example": "AIzaSy123456789123456789123456789"
+          },
+          "geocodingApiKey": {
+            "description": "Google Maps API key for all geocoding required when importing locations.",
+            "type": "string",
+            "example": "AIzaSy123456789123456789123456789"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
           }
         }
       },
@@ -373,6 +425,37 @@
             }
           }
         ]
+      },
+      "Field": {
+        "required": [
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "type": {
+            "enum": [
+              "text",
+              "date",
+              "tag",
+              "cta",
+              "audio",
+              "website",
+              "phone",
+              "address",
+              "description",
+              "image_link",
+              "category",
+              "placeName",
+              "number"
+            ],
+            "example": "text"
+          }
+        }
       },
       "Error": {
         "required": [
